@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>String to Image</title>
+    </head>
+
+    <body>
+        <h1>文字列を画像に変換</h1><BR>
+        {% if result %}
+        <img src="data:image/png;base64,{{img_data}}" alt="img_data" id="imgslot"/>
+            <div>{{result}}</div>
+    <HR>
+
+        {% endif %}
+        変換したい文字列ファイルを選択して送信してください
+        #送信するのは.txtファイルとjsonファイルのみにしてください。<BR>
+        <form action = "./" method="POST" enctype="multipart/form-data" name="form1">
+            <fieldset>
+                <input type="file" name = "file" id="file1" accept=".txt, .json" required>
+                <input type="button" id="btn1" value="送信" onclick="fileJudge(document.getElementById('file1').value)">
+            </fieldset>
+        </form>
+
+        <!-- 送信ファイルが.txtか.jsonではなかったらアラート -->
+        <script language="javascript" type="text/javascript">
+            const sizeLimit =10240 * 10240 * 1; //制限サイズ
+            const Inputfile = document.getElementById('file1');
+
+            function fileJudge(fileName) {
+                var Extension = getExtension(fileName);
+                const files = Inputfile.files;
+                
+                if (Extension.toLowerCase() ==='txt' || Extension.toLowerCase() ==='json') {
+                    if (files[0].size > sizeLimit){
+                        alert("ファイルサイズは100MB以下にしてください");
+                        Inputfile.value = '';
+                    }else{
+                        document.form1.submit();
+                    }
+                }
+                else {
+                    alert("選択するファイルは、txtかjsonファイルにしてください");
+                }
+  }
+            function getExtension(fileName) {
+                var ret;
+                if (!fileName) {
+                    return ret;
+                 }
+                var fileTypes = fileName.split(".");
+                var len = fileTypes.length;
+                if (len === 0) {
+                    return ret;
+                }
+                ret = fileTypes[len - 1];
+                return ret;
+                }
+        </script>
+    </body>
+</html>
+
